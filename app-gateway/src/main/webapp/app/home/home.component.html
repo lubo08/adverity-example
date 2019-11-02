@@ -1,11 +1,6 @@
 <div class="row">
-    <div class="col-md-3">
-        <span class="hipster img-fluid rounded"></span>
-    </div>
-    <div class="col-md-9">
+    <div class="col-md-12">
         <h1 class="display-4" jhiTranslate="home.title">Welcome, Adverity Advertising Data ETL-V</h1>
-        <p class="lead" jhiTranslate="home.subtitle">This is your examle</p>
-
         <div [ngSwitch]="isAuthenticated()">
             <div class="alert alert-success" *ngSwitchCase="true">
                 <span id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message"
@@ -20,8 +15,43 @@
                 <span jhiTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>&nbsp;
                 <a class="alert-link" routerLink="account/register" jhiTranslate="global.messages.info.register.link">Register a new account</a>
             </div>
+            
         </div>
-
-        
+    </div>
+</div>
+<div class="row" *ngIf="isAuthenticated()">
+    <div class="col-md-8">
+            <ngx-charts-line-chart
+                [view]="view"
+                [scheme]="colorScheme"
+                [results]="multi"
+                [gradient]="gradient"
+                [xAxis]="showXAxis"
+                [yAxis]="showYAxis"
+                [legend]="showLegend"
+                [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel"
+                [autoScale]="autoScale"
+                [timeline]="timeline"
+                (select)="onSelect($event)">
+            </ngx-charts-line-chart>
+    </div>
+    <div class="col-md-2">
+        <ngx-bootstrap-multiselect
+            name="selectedItems" 
+            [(ngModel)]="selectedItems" 
+            [items]="dropdownList" 
+            [settings]="dropdownSettings">
+        </ngx-bootstrap-multiselect>
+    </div>
+    <div class="col-md-2">
+        <ngx-bootstrap-multiselect
+            name="selectedItems2" 
+            [(ngModel)]="selectedItems2" 
+            [items]="dropdownList2" 
+            [settings]="dropdownSettings">
+        </ngx-bootstrap-multiselect>
     </div>
 </div>

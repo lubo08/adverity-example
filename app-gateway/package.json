@@ -8,6 +8,7 @@
     "node_modules"
   ],
   "dependencies": {
+    "@angular/animations": "^8.2.13",
     "@angular/common": "8.2.4",
     "@angular/compiler": "8.2.4",
     "@angular/core": "8.2.4",
@@ -21,10 +22,12 @@
     "@ng-bootstrap/ng-bootstrap": "5.1.0",
     "@ngx-translate/core": "11.0.1",
     "@ngx-translate/http-loader": "4.0.0",
+    "@swimlane/ngx-charts": "^12.0.1",
     "bootstrap": "4.3.1",
     "core-js": "3.2.1",
     "moment": "2.24.0",
     "ng-jhipster": "0.11.2",
+    "ngx-bootstrap-multiselect-dropdown": "^1.0.8",
     "ngx-cookie": "4.0.2",
     "ngx-infinite-scroll": "8.0.0",
     "ngx-webstorage": "4.0.1",
