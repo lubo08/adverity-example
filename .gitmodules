@@ -1,0 +1,6 @@
+[submodule "app-gateway"]
+	path = app-gateway
+	url = https://github.com/lubo08/adverity-example.git
+[submodule "app-microservice-loader"]
+	path = app-microservice-loader
+	url = https://github.com/lubo08/adverity-example.git
