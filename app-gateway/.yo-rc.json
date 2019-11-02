@@ -1,0 +1,42 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.aade.web",
+      "nativeLanguage": "en"
+    },
+    "jhipsterVersion": "6.4.1",
+    "applicationType": "gateway",
+    "baseName": "aade",
+    "packageName": "com.aade.web",
+    "packageFolder": "com/aade/web",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "hazelcast",
+    "enableHibernateCache": true,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "h2Memory",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": "elasticsearch",
+    "messageBroker": false,
+    "serviceDiscoveryType": "eureka",
+    "buildTool": "gradle",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "NDg2YmFiMTFhYjI1NzFkOWQ5MzJkM2IyYjcxNGFiYmUyMDNhYmQ2OWNjYzQwODVhMmNlNDMyMjQ0MTM4YTNiYzBjZTM1ZWMxNDhjMWE5NjhjMjdkOWIxZmFmMTk1NTEwOWM1Mjc5YzQyZjdlYzhjNjdkOGU3MWY4NDZmYzgzMWM=",
+    "embeddableLaunchScript": false,
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "clientFramework": "angularX",
+    "clientTheme": "none",
+    "clientThemeVariant": "",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": true,
+    "nativeLanguage": "en",
+    "languages": ["en", "de", "sk"],
+    "blueprints": []
+  }
+}
