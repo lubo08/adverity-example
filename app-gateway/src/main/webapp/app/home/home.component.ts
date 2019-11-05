@@ -210,10 +210,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.sourcesForm.get('datasource').valueChanges.subscribe(value => {});
   }
 
-  onSelect(event) {
-    // console.log(event);
-  }
-
   registerAuthenticationSuccess() {
     this.authSubscription = this.eventManager.subscribe('authenticationSuccess', message => {
       this.accountService.identity().subscribe(account => {
@@ -254,10 +250,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   requestAutocompleteItems(text: string): Observable<any> {
-    // const url = `https://my.api.com/search?q=${text}`;
-    // return this.http
-    //     .get(url)
-    //     .map(data => data.json());
     return this.http.get<any[]>(`/api/_search/datasources`).pipe(
       first(),
       map(response => {

@@ -326,34 +326,4 @@ public class UserResource {
     		return data;
     	
     }
-    /*
-     * {
-    "size": 0,
-    "aggs" : {
-        "clicks_per_month" : {
-            "date_histogram" : {
-                "field" : "date",
-                "interval" : "day"
-            },
-            "aggs": {
-                "clicks": {
-                    "sum": {
-                        "field": "clicks"
-                    }
-                },
-                "impressions": {
-                    "sum": {
-                        "field": "impressions"
-                    }
-                }
-                
-            }
-        },
-        "sum_clicks": {
-            "sum_bucket": {
-                "buckets_path": "clicks_per_month>clicks" 
-            }
-        }
-    }
-}*/
 }
