@@ -60,4 +60,58 @@ return steps.get("stepLoadCsv").chunk(5000)
 	.build();
 }
 ```
+### 2. load data from elastick search on backend
+This is done with spring boot and spring elasticksearch data repository.
+This query aggregate datasources for selection list.
+```java
+@GetMapping("/_search/datasources")
+public List<String> searchDataSources() {
+	SearchQuery searchQuery = new NativeSearchQueryBuilder()
+	    .withIndices("data")             
+	    .addAggregation(AggregationBuilders.terms("uniq_datasource").size(100).field("datasource.keyword"))
+	    .build();
+
+	MetricAggregation aggregations = elasticsearchTemplate.query(searchQuery, 
+		new JestResultsExtractor<MetricAggregation>() {
+					@Override
+					public MetricAggregation extract(SearchResult response) {
+						return response.getAggregations();
+					}
+	});
+	List<String> datasources = new ArrayList<String>();
+	for (Entry bucket: aggregations.getTermsAggregation("uniq_datasource").getBuckets()) {
+		datasources.add(bucket.getKey());
+	}
+
+	return datasources;
+}
+
+```
+This query aggregate camplaigns for selection list
+```java
+@GetMapping("/_search/campaigns")
+public List<String> searchCampaigns() {
+	SearchQuery searchQuery = new NativeSearchQueryBuilder()
+	    .withIndices("data")             
+	    .addAggregation(AggregationBuilders.terms("uniq_campaigns").size(100).field("campaign.keyword"))
+	    .build();
+
+	MetricAggregation aggregations = elasticsearchTemplate.query(searchQuery, 
+		new JestResultsExtractor<MetricAggregation>() {
+					@Override
+					public MetricAggregation extract(SearchResult response) {
+						return response.getAggregations();
+					}
+	});
+	List<String> campaigns = new ArrayList<String>();
+	for (Entry bucket: aggregations.getTermsAggregation("uniq_campaigns").getBuckets()) {
+		campaigns.add(bucket.getKey());
+	}
+
+	return campaigns;
+}
+```
+
+
+
 
