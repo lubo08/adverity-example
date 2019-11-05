@@ -60,7 +60,7 @@ return steps.get("stepLoadCsv").chunk(5000)
 	.build();
 }
 ```
-### 2. load data from elastick search on backend
+### 2. load data from elasticksearch on backend
 This is done with spring boot and spring elasticksearch data repository.
 This query aggregate datasources for selection list.
 ```java
@@ -87,7 +87,7 @@ public List<String> searchDataSources() {
 }
 
 ```
-This query aggregate camplaigns for selection list
+This query aggregate campaigns for selection list
 ```java
 @GetMapping("/_search/campaigns")
 public List<String> searchCampaigns() {
@@ -111,7 +111,41 @@ public List<String> searchCampaigns() {
 	return campaigns;
 }
 ```
+This is query to load data into graph.js all or based on list of fatasources and campaigns
+```java
+@GetMapping("/_search/datagram/{query}")
+public List<DayData> searchDatagram(@PathVariable String query) throws ParseException {
 
+SearchQuery searchQuery = new NativeSearchQueryBuilder()
+	    .withIndices("data")
+	    .withQuery(queryStringQuery(query))
+	    .addAggregation(
+			AggregationBuilders
+			.dateHistogram("per_day").field("date").dateHistogramInterval(DateHistogramInterval.DAY)
+			.subAggregation(AggregationBuilders.sum("clicks").field("clicks"))
+			.subAggregation(AggregationBuilders.sum("impressions").field("impressions"))
+			)
+	    .build();
+
+	MetricAggregation aggregations = elasticsearchTemplate.query(searchQuery, 
+		new JestResultsExtractor<MetricAggregation>() {
+					@Override
+					public MetricAggregation extract(SearchResult response) {
+						return response.getAggregations();
+					}
+	});
+	List<DayData> data = new ArrayList<DayData>();
+	for (DateHistogram bucket: aggregations.getDateHistogramAggregation("per_day").getBuckets()) {
+		DayData row = new DayData();
+		row.setDay(new SimpleDateFormat("yyyy-MM-dd").parse(bucket.getTimeAsString()));
+		row.setClicks(bucket.getSumAggregation("clicks").getSum());
+		row.setImpresions(bucket.getSumAggregation("impressions").getSum());
+		data.add(row);
+	}
+	return data;
+
+}
+```
 
 
 
