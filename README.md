@@ -18,7 +18,7 @@ Now wait few minutes to run all images in docker.
 
 # Example description
 
-This example is build with misroservice architecture, basick stack was generated with jHipster code generator. 
+This example is build as microservice architecture, basic stack was generated with jHipster code generator. 
 This architecture contains this components.
 ###### Two basic component used in development
 1. App gateway, `app-gateway` this is Spring boot application running as backend and Angular app as frontend. 
