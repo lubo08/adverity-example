@@ -40,7 +40,7 @@
             <ngx-chartjs [data]="data" [options]="options" type="line" *ngIf="data.labels.length > 0"></ngx-chartjs>
     </div>
     <div class="col-md-4">
-        <tag-input [ngModel]="modelDatasources" [secondaryPlaceholder]="'Add datasources'"
+        <tag-input [(ngModel)]="modelDatasources" [secondaryPlaceholder]="'Add datasources'" (onTextChange)="filterChanged();" (onRemove)="filterChanged();"
                        [onlyFromAutocomplete]="true">
                 <tag-input-dropdown [showDropdownIfEmpty]="true"
                                     [focusFirstElement]="true"
@@ -52,7 +52,7 @@
                     </ng-template>
                 </tag-input-dropdown>
             </tag-input>
-        <tag-input [ngModel]="modelCampaigns" [secondaryPlaceholder]="'Add campaigns'"
+        <tag-input [(ngModel)]="modelCampaigns" [secondaryPlaceholder]="'Add campaigns'" (onTextChange)="filterChanged();" (onRemove)="filterChanged();"
                        [onlyFromAutocomplete]="true">
                 <tag-input-dropdown [showDropdownIfEmpty]="true"
                                     [focusFirstElement]="true"

@@ -294,11 +294,12 @@ public class UserResource {
     	
     }
     
-    @GetMapping("/_search/datagram")
-    public List<DayData> searchDatagram() throws ParseException {
+    @GetMapping("/_search/datagram/{query}")
+    public List<DayData> searchDatagram(@PathVariable String query) throws ParseException {
         
     	SearchQuery searchQuery = new NativeSearchQueryBuilder()
-    		    .withIndices("data")             
+    		    .withIndices("data")
+    		    .withQuery(queryStringQuery(query))
     		    .addAggregation(
     		    		AggregationBuilders
     		    		.dateHistogram("per_day").field("date").dateHistogramInterval(DateHistogramInterval.DAY)

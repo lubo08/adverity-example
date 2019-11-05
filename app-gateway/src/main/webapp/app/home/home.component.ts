@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
@@ -7,7 +7,8 @@ import { LoginModalService } from 'app/core/login/login-modal.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { HttpClient } from '@angular/common/http';
-import { first } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'jhi-home',
@@ -187,11 +188,17 @@ export class HomeComponent implements OnInit, OnDestroy {
     enableFilter: true
   };
 
+  sourcesForm = this.fb.group({
+    datasource: [],
+    campaigns: []
+  });
+
   constructor(
     private accountService: AccountService,
     private loginModalService: LoginModalService,
     private eventManager: JhiEventManager,
-    private http: HttpClient
+    private http: HttpClient,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit() {
@@ -200,6 +207,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.loagData();
     });
     this.registerAuthenticationSuccess();
+    this.sourcesForm.get('datasource').valueChanges.subscribe(value => {});
   }
 
   onSelect(event) {
@@ -232,26 +240,74 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
       });
     this.http
-      .get<any[]>(`/api/_search/datagram`)
+      .get<any[]>(`/api/_search/datagram/*`)
       .pipe(first())
       .subscribe(response => {
         this.myDataSets = [];
         response.forEach(day => {
-          // console.log(day);
           const lineDate = new Date(day.day);
           this.data.labels.push(lineDate.toLocaleDateString());
           this.data.datasets[0].data.push(day.clicks);
           this.data.datasets[1].data.push(day.impresions);
         });
-        // this.multi.push({
-        //   name: 'Clicks',
-        //   series: clicks
-        // });
-        // this.multi.push({
-        //   name: 'Impresions',
-        //   series: impresions
-        // });
-        // console.log(response);
+      });
+  }
+
+  requestAutocompleteItems(text: string): Observable<any> {
+    // const url = `https://my.api.com/search?q=${text}`;
+    // return this.http
+    //     .get(url)
+    //     .map(data => data.json());
+    return this.http.get<any[]>(`/api/_search/datasources`).pipe(
+      first(),
+      map(response => {
+        response.forEach(source => {
+          this.autocompleteCampaigns.push({ value: source, id: source });
+        });
+        return this.autocompleteCampaigns;
+      })
+    );
+  }
+
+  filterChanged() {
+    // console.log(this.modelDatasources);
+    let searchString = '';
+    let i = 0;
+    if (this.modelDatasources) {
+      this.modelDatasources.forEach(element => {
+        if (i > 0) {
+          searchString += ' AND ';
+        }
+        i += 1;
+        searchString += '(datasource:' + element.id + ')';
+      });
+    }
+    if (this.modelCampaigns) {
+      this.modelCampaigns.forEach(element => {
+        if (i > 0) {
+          searchString += ' AND ';
+        }
+        i += 1;
+        searchString += '(campaign:' + element.id + ')';
+      });
+    }
+    if ((!this.modelDatasources || this.modelDatasources.length === 0) && (!this.modelCampaigns || this.modelCampaigns.length === 0)) {
+      searchString = '*';
+    }
+    this.data.labels = [];
+    this.data.datasets[0].data = [];
+    this.data.datasets[1].data = [];
+    this.http
+      .get<any[]>(`/api/_search/datagram/${searchString}`)
+      .pipe(first())
+      .subscribe(response => {
+        this.myDataSets = [];
+        response.forEach(day => {
+          const lineDate = new Date(day.day);
+          this.data.labels.push(lineDate.toLocaleDateString());
+          this.data.datasets[0].data.push(day.clicks);
+          this.data.datasets[1].data.push(day.impresions);
+        });
       });
   }
 
