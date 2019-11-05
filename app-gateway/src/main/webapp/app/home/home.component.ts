@@ -94,6 +94,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
 
+  myDataSets = [
+    {
+      name: 'likes',
+      points: [{ x: 10, y: 100 }, { x: 20, y: 500 }]
+    }
+  ];
+
   // line, area
   autoScale = true;
   dropdownList = [];
@@ -104,6 +111,64 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // model
   selectedItems2 = [];
+  autocompleteDatasources = [];
+  modelDatasources;
+
+  autocompleteCampaigns = [];
+  modelCampaigns;
+
+  data = {
+    labels: [],
+    datasets: [
+      {
+        label: 'Clicks',
+        borderColor: 'red',
+        backgroundColor: 'red',
+        fill: false,
+        data: [],
+        yAxisID: 'y-axis-1'
+      },
+      {
+        label: 'Impresions',
+        borderColor: 'blue',
+        backgroundColor: 'blue',
+        fill: false,
+        data: [],
+        yAxisID: 'y-axis-2'
+      }
+    ]
+  };
+
+  options = {
+    responsive: true,
+    hoverMode: 'index',
+    stacked: false,
+    title: {
+      display: true,
+      text: 'Chart.js Line Chart - Multi Axis'
+    },
+    scales: {
+      yAxes: [
+        {
+          type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+          display: true,
+          position: 'left',
+          id: 'y-axis-1'
+        },
+        {
+          type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+          display: true,
+          position: 'right',
+          id: 'y-axis-2',
+
+          // grid line settings
+          gridLines: {
+            drawOnChartArea: false // only want the grid lines for one axis to show up
+          }
+        }
+      ]
+    }
+  };
 
   // Example settings
   dropdownSettings = {
@@ -155,7 +220,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe(response => {
         response.forEach(source => {
-          this.dropdownList2.push({ idValue: source, nameValue: source });
+          this.autocompleteCampaigns.push({ value: source, id: source });
         });
       });
     this.http
@@ -163,38 +228,29 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe(response => {
         response.forEach(source => {
-          this.dropdownList.push({ idValue: source, nameValue: source });
+          this.autocompleteDatasources.push({ value: source, id: source });
         });
       });
     this.http
       .get<any[]>(`/api/_search/datagram`)
       .pipe(first())
       .subscribe(response => {
-        this.multi = [];
-        const clicks = [];
-        const impresions = [];
+        this.myDataSets = [];
         response.forEach(day => {
           // console.log(day);
           const lineDate = new Date(day.day);
-          clicks.push({
-            name: lineDate.toLocaleDateString(),
-            yAxis: 0,
-            value: day.clicks
-          });
-          impresions.push({
-            name: lineDate.toLocaleDateString(),
-            yAxis: 1,
-            value: day.impresions
-          });
+          this.data.labels.push(lineDate.toLocaleDateString());
+          this.data.datasets[0].data.push(day.clicks);
+          this.data.datasets[1].data.push(day.impresions);
         });
-        this.multi.push({
-          name: 'Clicks',
-          series: clicks
-        });
-        this.multi.push({
-          name: 'Impresions',
-          series: impresions
-        });
+        // this.multi.push({
+        //   name: 'Clicks',
+        //   series: clicks
+        // });
+        // this.multi.push({
+        //   name: 'Impresions',
+        //   series: impresions
+        // });
         // console.log(response);
       });
   }

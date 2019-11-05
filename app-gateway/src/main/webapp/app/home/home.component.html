@@ -20,8 +20,8 @@
     </div>
 </div>
 <div class="row" *ngIf="isAuthenticated()">
-    <div class="col-md-8">
-            <ngx-charts-line-chart
+    <div class="col-md-6">
+           <!--  <ngx-charts-line-chart
                 [view]="view"
                 [scheme]="colorScheme"
                 [results]="multi"
@@ -36,22 +36,34 @@
                 [autoScale]="autoScale"
                 [timeline]="timeline"
                 (select)="onSelect($event)">
-            </ngx-charts-line-chart>
+            </ngx-charts-line-chart> -->
+            <ngx-chartjs [data]="data" [options]="options" type="line" *ngIf="data.labels.length > 0"></ngx-chartjs>
     </div>
-    <div class="col-md-2">
-        <ngx-bootstrap-multiselect
-            name="selectedItems" 
-            [(ngModel)]="selectedItems" 
-            [items]="dropdownList" 
-            [settings]="dropdownSettings">
-        </ngx-bootstrap-multiselect>
+    <div class="col-md-4">
+        <tag-input [ngModel]="modelDatasources" [secondaryPlaceholder]="'Add datasources'"
+                       [onlyFromAutocomplete]="true">
+                <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                    [focusFirstElement]="true"
+                                    [displayBy]="'value'"
+                                    [identifyBy]="'id'"
+                                    [autocompleteItems]="autocompleteDatasources">
+                    <ng-template let-item="item" let-index="index">
+                        {{ item.value }}
+                    </ng-template>
+                </tag-input-dropdown>
+            </tag-input>
+        <tag-input [ngModel]="modelCampaigns" [secondaryPlaceholder]="'Add campaigns'"
+                       [onlyFromAutocomplete]="true">
+                <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                    [focusFirstElement]="true"
+                                    [displayBy]="'value'"
+                                    [identifyBy]="'id'"
+                                    [autocompleteItems]="autocompleteCampaigns">
+                    <ng-template let-item="item" let-index="index">
+                        {{ item.value }}
+                    </ng-template>
+                </tag-input-dropdown>
+            </tag-input>
     </div>
-    <div class="col-md-2">
-        <ngx-bootstrap-multiselect
-            name="selectedItems2" 
-            [(ngModel)]="selectedItems2" 
-            [items]="dropdownList2" 
-            [settings]="dropdownSettings">
-        </ngx-bootstrap-multiselect>
-    </div>
+    
 </div>
