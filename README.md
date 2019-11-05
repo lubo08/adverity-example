@@ -1,6 +1,6 @@
 # adverity-example
 
-Instal docker and docker compose if not have to runthis example
+Instal docker and docker compose if not have to run this example
 
 ## Clone this repository. `git clone`
 
