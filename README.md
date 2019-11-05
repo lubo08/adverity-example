@@ -30,22 +30,34 @@ This architecture contains this components.
 Import file is done with Spring integration.
 
 ```java
-    // this will run file download, first start with delay 15sec.
-    @Scheduled(fixedDelay = 900000, initialDelay = 15000)
-    public void scheduleFixedRateWithInitialDelayTask() {
-      msg.getCsvFileMessage("Run flow: download csv file");
-    }
-    // this is dowlad file flow from URL.
-    @Bean
-    public IntegrationFlow getCsvFile() {
-		return IntegrationFlows.from(httpRequestChannel())
-				.handle(httpOutboundGw())
-				.handle(Files.outboundGateway(new File(tmpPath)))
-				// .handle(processFileChannel())
-				.log(LoggingHandler.Level.DEBUG, "TEST_LOGGER",
-                        m -> m.getHeaders().getId() + ": " + m.getPayload())
-				.handle(fileMessageToJobRequest())
-				.handle(jobLaunchingGateway())
-				.get();
-	}
+// this will run file download, first start with delay 15sec.
+@Scheduled(fixedDelay = 900000, initialDelay = 15000)
+public void scheduleFixedRateWithInitialDelayTask() {
+	msg.getCsvFileMessage("Run flow: download csv file");
+}
+// this is dowlad file flow from URL.
+@Bean
+public IntegrationFlow getCsvFile() {
+	return IntegrationFlows.from(httpRequestChannel())
+		.handle(httpOutboundGw())
+		.handle(Files.outboundGateway(new File(tmpPath)))
+		// .handle(processFileChannel())
+		.log(LoggingHandler.Level.DEBUG, "TEST_LOGGER",
+	m -> m.getHeaders().getId() + ": " + m.getPayload())
+		.handle(fileMessageToJobRequest())
+		.handle(jobLaunchingGateway())
+		.get();
+}
 ```
+File is processed with spring integration batch, and load data to elasticksearch in 5000 rows chunk. Should take les then second.
+
+```java
+@Bean
+protected Step stepLoadCsv() {
+return steps.get("stepLoadCsv").chunk(5000)
+		.reader(cvsFileItemReader(null, null))
+	.writer((ItemWriter) rowWriter())
+	.build();
+}
+```
+
