@@ -10,6 +10,9 @@ Go to `app-microservice-loader` folder and run same command.
 
 After images builded go to folder `docker-compose` and run `docker-compose up -d`
 
+Description how ist this stack generated and what is running see in my blog on linkedin. 
+[Microservices in 10 minutes](https://www.linkedin.com/pulse/microservices-java-jhipster-10-minutes-lubomir-sobinovsky/)
+
 ## App is running.
 Now wait few minutes to run all images in docker. 
 
