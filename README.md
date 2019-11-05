@@ -38,7 +38,7 @@ Import file is done with Spring integration.
 public void scheduleFixedRateWithInitialDelayTask() {
 	msg.getCsvFileMessage("Run flow: download csv file");
 }
-// this is dowlad file flow from URL.
+// this is downlad file flow from URL.
 @Bean
 public IntegrationFlow getCsvFile() {
 	return IntegrationFlows.from(httpRequestChannel())
