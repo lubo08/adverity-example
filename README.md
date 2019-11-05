@@ -10,7 +10,7 @@ Go to `app-microservice-loader` folder and run same command.
 
 After images builded go to folder `docker-compose` and run `docker-compose up -d`
 
-Description how ist this stack generated and what is running see in my blog on linkedin. 
+Description how is this stack generated and what is running see in my blog on linkedin. 
 [Microservices in 10 minutes](https://www.linkedin.com/pulse/microservices-java-jhipster-10-minutes-lubomir-sobinovsky/)
 
 ## App is running.
@@ -23,11 +23,11 @@ This architecture contains this components.
 ###### Two basic component used in development
 1. App gateway, `app-gateway` this is Spring boot application running as backend and Angular app as frontend. 
 2. app microservise `app-microservice-loader` just for purpose of automatically download and process files. 
-###### Maintanance component used for microservice network organization. 
-3. Elastick - user to store analitics data to show on application presentation layer. 
+###### Maintenance component used for microservice network organization. 
+3. Elastic - user to store analytics data to show on application presentation layer. 
 4. Eureka and configurations server with jhipster registry app - The JHipster Registry is a runtime application on which all applications registers and get their configuration from. It also provides runtime monitoring dashboards.
 5. Monitoring & alerting console, based on the ELK stack
-6. Zuul load balance on app gatway
+6. Zuul load balance on app gateway
 
 ### 1. Import file and process
 Import file is done with Spring integration.
@@ -63,8 +63,8 @@ return steps.get("stepLoadCsv").chunk(5000)
 	.build();
 }
 ```
-### 2. load data from elasticksearch on backend
-This is done with spring boot and spring elasticksearch data repository.
+### 2. load data from elasticsearch on backend
+This is done with spring boot and spring elasticsearch data repository.
 This query aggregate datasources for selection list.
 ```java
 @GetMapping("/_search/datasources")
