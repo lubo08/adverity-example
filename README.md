@@ -147,5 +147,5 @@ SearchQuery searchQuery = new NativeSearchQueryBuilder()
 }
 ```
 
-
+![Frontend](https://github.com/lubo08/adverity-example/blob/master/example1.png)
 
