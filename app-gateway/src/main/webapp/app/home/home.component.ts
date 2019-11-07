@@ -268,7 +268,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.modelDatasources) {
       this.modelDatasources.forEach(element => {
         if (i > 0) {
-          searchString += ' AND ';
+          searchString += ' OR ';
         }
         i += 1;
         searchString += '(datasource:' + element.id + ')';
@@ -277,7 +277,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.modelCampaigns) {
       this.modelCampaigns.forEach(element => {
         if (i > 0) {
-          searchString += ' AND ';
+          searchString += ' OR ';
         }
         i += 1;
         searchString += '(campaign:' + element.id + ')';
